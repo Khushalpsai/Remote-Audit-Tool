@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Audit Dashboard</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Simple dark mode for the dashboard */
+        body { background-color: #111827; color: #d1d5db; }
+        .nav-button {
+            display: block; width: 100%; text-align: left; padding: 0.75rem 1rem;
+            color: #d1d5db; border-radius: 0.5rem; transition: background-color 0.2s;
+            font-weight: 500;
+        }
+        .nav-button:hover { background-color: #374151; color: white; }
+        .nav-button.active { background-color: #4f46e5; color: white; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        table { width: 100%; }
+        th { background-color: #374151; padding: 0.5rem 1rem; text-align: left; }
+        td { padding: 0.5rem 1rem; border-bottom: 1px solid #374151; }
+        tr:hover { background-color: #1f2937; }
+        pre { background-color: #1f2937; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+    </style>
+</head>
+<body class="font-sans">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white">COMPUTER AUDIT TOOL</h1>
+            <p id="status-bar" class="text-lg text-indigo-400">Loading audit data...</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Navigation Sidebar (like your screenshot) -->
+            <nav class="w-full md:w-1/4">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <button class="nav-button active" data-target="view-dashboard">Dashboard</button>
+                    <button class="nav-button" data-target="view-os-details">OS Details</button>
+                    <button class="nav-button" data-target="view-software-list">Software Installed</button>
+                    <button class="nav-button" data-target="view-process-list">Running Processes</button>
+                    <button class="nav-button" data-target="view-ports-list">Open Ports</button>
+                    <button class="nav-button" data-target="view-network-info">Network Info</button>
+                    <button class="nav-button" data-target="view-usb-history">USB History</button>
+                    <button class="nav-button" data-target="view-login-history">Failed Logins</button>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="w-full md:w-3/4">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg min-h-[400px]">
+
+                    <!-- Dashboard View -->
+                    <section class="content-section active" id="view-dashboard">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Welcome to the Audit Dashboard</h2>
+                        <p class="text-lg">Select an operation from the left menu to view the audit details.</p>
+                        <div id="dashboard-summary" class="mt-6">
+                            <!-- Summary data will be injected here by JS -->
+                        </div>
+                    </section>
+
+                    <!-- OS Details View -->
+                    <section class="content-section" id="view-os-details">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Operating System Details</h2>
+                        <pre id="os-details-content">No data loaded.</pre>
+                    </section>
+
+                    <!-- Software List View -->
+                    <section class="content-section" id="view-software-list">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Software Installed</h2>
+                        <table class="table-auto" id="software-table">
+                            <thead><tr><th>Name</th><th>Version</th><th>Publisher</th></tr></thead>
+                            <tbody><tr><td colspan="3">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                    <!-- Process List View -->
+                    <section class="content-section" id="view-process-list">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Running Processes</h2>
+                        <table class="table-auto" id="process-table">
+                            <thead><tr><th>Name</th><th>ID</th><th>CPU</th></tr></thead>
+                            <tbody><tr><td colspan="3">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                    <!-- Open Ports View -->
+                    <section class="content-section" id="view-ports-list">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Established Network Ports</h2>
+                        <table class="table-auto" id="ports-table">
+                            <thead><tr><th>Local</th><th>Remote</th></tr></thead>
+                            <tbody><tr><td colspan="2">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                    <!-- Network Info View -->
+                    <section class="content-section" id="view-network-info">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Network Info</h2>
+                        <table class="table-auto" id="network-table">
+                            <thead><tr><th>IP Address</th><th>Interface</th></tr></thead>
+                            <tbody><tr><td colspan="2">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                    <!-- USB History View -->
+                    <section class="content-section" id="view-usb-history">
+                        <h2 class="text-2xl font-semibold text-white mb-4">USB Storage History</h2>
+                        <table class="table-auto" id="usb-table">
+                            <thead><tr><th>Friendly Name</th><th>ID</th></tr></thead>
+                            <tbody><tr><td colspan="2">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                    <!-- Login History View -->
+                    <section class="content-section" id="view-login-history">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Failed Login History</h2>
+                        <table class="table-auto" id="login-table">
+                            <thead><tr><th>Time</th><th>Message</th></tr></thead>
+                            <tbody><tr><td colspan="2">No data loaded.</td></tr></tbody>
+                        </table>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Store the latest audit data
+        let latestAudit = null;
+
+        // Function to switch between views
+        function showView(targetId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Deactivate all buttons
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show target section
+            document.getElementById(targetId).classList.add('active');
+            // Activate target button
+            document.querySelector(.nav-button[data-target="${targetId}"]).classList.add('active');
+        }
+
+        // Function to populate the data tables
+        function renderData() {
+            if (!latestAudit) return;
+
+            // 1. Status Bar
+            document.getElementById('status-bar').innerText = Last update from ${latestAudit.hostname} (${latestAudit.client_id}) at ${latestAudit.timestamp};
+
+            // 2. Dashboard Summary
+            document.getElementById('dashboard-summary').innerHTML = `
+                <p><strong>Hostname:</strong> ${latestAudit.hostname}</p>
+                <p><strong>OS:</strong> ${latestAudit.os_details.OsName}</p>
+                <p><strong>Software Installed:</strong> ${latestAudit.software_list.length} items</p>
+                <p><strong>Failed Logins:</strong> ${latestAudit.login_history.length} events</p>
+            `;
+
+            // 3. OS Details
+            document.getElementById('os-details-content').innerText = JSON.stringify(latestAudit.os_details, null, 2);
+
+            // 4. Software Table
+            const softwareBody = document.getElementById('software-table').querySelector('tbody');
+            softwareBody.innerHTML = latestAudit.software_list.map(sw => `
+                <tr><td>${sw.DisplayName}</td><td>${sw.DisplayVersion}</td><td>${sw.Publisher}</td></tr>
+            `).join('');
+
+            // 5. Process Table
+            const processBody = document.getElementById('process-table').querySelector('tbody');
+            processBody.innerHTML = latestAudit.process_list.map(p => `
+                <tr><td>${p.Name}</td><td>${p.Id}</td><td>${p.CPU}</td></tr>
+            `).join('');
+
+            // 6. Ports Table
+            const portsBody = document.getElementById('ports-table').querySelector('tbody');
+            portsBody.innerHTML = latestAudit.ports_list.map(p => `
+                <tr><td>${p.LocalAddress}:${p.LocalPort}</td><td>${p.RemoteAddress}:${p.RemotePort}</td></tr>
+            `).join('');
+
+            // 7. Network Table
+            const networkBody = document.getElementById('network-table').querySelector('tbody');
+            networkBody.innerHTML = latestAudit.network_info.map(n => `
+                <tr><td>${n.IPAddress}</td><td>${n.InterfaceAlias}</td></tr>
+            `).join('');
+
+            // 8. USB Table
+            const usbBody = document.getElementById('usb-table').querySelector('tbody');
+            usbBody.innerHTML = latestAudit.usb_history.map(u => `
+                <tr><td>${u.FriendlyName}</td><td>${(u.CompatibleIDs || [])[0] || ''}</td></tr>
+            `).join('');
+
+            // 9. Login Table
+            const loginBody = document.getElementById('login-table').querySelector('tbody');
+            loginBody.innerHTML = latestAudit.login_history.map(l => `
+                <tr><td>${l.TimeCreated}</td><td class="text-sm">${l.Message.substring(0, 200)}...</td></tr>
+            `).join('');
+        }
+
+        // --- Main execution on page load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click listeners to nav buttons
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    showView(button.dataset.target);
+                });
+            });
+
+            // Fetch data from the server
+            fetch('/logs')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        latestAudit = data[0]; // Get the most recent audit
+                        renderData(); // Populate all the sections with data
+                    } else {
+                        document.getElementById('status-bar').innerText = "No audit data received yet. Run the agent on a client PC.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching logs:', error);
+                    document.getElementById('status-bar').innerText = "Error fetching data from server.";
+                });
+        });
+    </script>
+</body>
+</html>

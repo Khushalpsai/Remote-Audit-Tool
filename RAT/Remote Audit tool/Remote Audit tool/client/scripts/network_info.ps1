@@ -1,0 +1,1 @@
+Get-NetIPAddress | Select-Object IPAddress, InterfaceAlias | ConvertTo-Json

@@ -1,0 +1,1 @@
+Get-EventLog -LogName Security -InstanceId 4624 | Select-Object TimeGenerated, EntryType, Message | ConvertTo-Json

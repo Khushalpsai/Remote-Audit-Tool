@@ -1,0 +1,1 @@
+Get-NetTCPConnection | Select-Object LocalAddress, LocalPort, State | ConvertTo-Json

@@ -1,0 +1,1 @@
+Get-WmiObject Win32_USBHub | Select-Object DeviceID, Description | ConvertTo-Json
